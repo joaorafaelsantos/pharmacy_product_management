@@ -1,0 +1,30 @@
+{
+  "name": "product-management",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc && sh ./scripts/dist.sh",
+    "start": "node build/index.js",
+    "start:watch": "nodemon"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@gitlab.com-feup:feup-cp-hospital-management/pharmacy/product-management.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "aws-sdk": "^2.580.0",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "dotenv": "^8.2.0"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.2",
+    "@types/node": "^12.12.14",
+    "nodemon": "^2.0.1",
+    "ts-node": "^8.5.2",
+    "typescript": "^3.7.2"
+  }
+}
