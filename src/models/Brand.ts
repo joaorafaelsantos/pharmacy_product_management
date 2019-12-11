@@ -24,9 +24,8 @@ class Brand implements IBrand {
         return await db.findOne(BRAND_TABLE, id)
     }
 
-    // TODO Update Brand
-    static update(id: number, name: string) {
-
+    static async updateById(id: string, data: object) {
+        return await db.update(BRAND_TABLE, id, data)
     }
 
     static async removeById(id: string) {

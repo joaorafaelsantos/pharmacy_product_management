@@ -1,13 +1,13 @@
 import Brand from "../models/Brand"
 
 const create = async (res: any, name: string) => {
-        try {
-            if (name) return await Brand.create(new Brand(name).serialize())
-            res.status(400)
-            throw Error ("Name is not defined")
-        } catch (err) {
-            return { error: String(err) }
-        }
+    try {
+        if (name) return await Brand.create(new Brand(name).serialize())
+        res.status(400)
+        throw Error("Name is not defined")
+    } catch (err) {
+        return { error: String(err) }
+    }
 }
 
 const getAll = async () => {
@@ -26,6 +26,16 @@ const getById = async (id: string) => {
     }
 }
 
+const updateById = async (res: any, id: string, name: string) => {
+    try {
+        if (name) return await Brand.updateById(id, {name})
+        res.status(400)
+        throw Error("Name is not defined")
+    } catch (err) {
+        return { error: String(err) }
+    }
+}
+
 const removeById = async (id: string) => {
     try {
         return await Brand.removeById(id)
@@ -34,4 +44,4 @@ const removeById = async (id: string) => {
     }
 }
 
-export default { create, getAll, getById, removeById }
+export default { create, getAll, getById, updateById, removeById }

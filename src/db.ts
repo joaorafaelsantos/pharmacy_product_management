@@ -21,6 +21,11 @@ async function ddbScan(query) {
     return scan
 }
 
+async function ddbUpdate(query) {
+    const scan = await documentClient.update(query).promise()
+    return scan
+}
+
 async function ddbRemove(query) {
     const remove = await documentClient.delete(query).promise()
     return remove
@@ -55,6 +60,21 @@ async function findOne(table: string, value: string) {
     return results[DDB_ITEMS][0] || {}
 }
 
+async function update(table: string, value: string, data: object) {
+    const updateQuery = {
+        TableName: table,
+        Key: {
+            "id": value
+        },
+        UpdateExpression: "set variable1 = :name",
+        ExpressionAttributeValues: {
+            ":name": data,
+        }
+    };
+    await ddbUpdate(updateQuery)
+    return { ...data }
+}
+
 async function remove(table: string, value: string) {
     const key = "id"
     const removeByIdQuery = {
@@ -67,4 +87,4 @@ async function remove(table: string, value: string) {
     return results
 }
 
-export default { create, findAll, findOne, remove }
+export default { create, findAll, findOne, update, remove }
