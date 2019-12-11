@@ -10,7 +10,7 @@ const options = {
             version: '1.0.0', 
       },
     },
-    apis: ['./**/*.ts'],
+    apis: process.env.ENVIRONMENT === "development" ? ['./**/*.ts'] : ['./**/*.js'],
   };
   
   const swaggerSpec = swaggerJSDoc(options);
