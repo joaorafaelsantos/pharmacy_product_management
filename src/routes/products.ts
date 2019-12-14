@@ -4,7 +4,7 @@ import productController from "../controllers/productController"
 
 /**
 * @swagger
-  * /product:
+  * /products:
   * post:
   *     consumes:
   *       - application/json
