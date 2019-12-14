@@ -3,6 +3,7 @@ const cors = require('cors');
 require("dotenv").config()
 
 import brands from "./routes/brands"
+import products from "./routes/products"
 import swagger from "./swagger"
 
 const API_VERSION = "v1"
@@ -23,7 +24,8 @@ app.use(`/api/${API_VERSION}/api-docs`, swagger)
 // TODO - Health check
 app.get("/health", (req, res) => res.json({ status: "health", code: "200" }))
 
-// TODO - Products
+// Brands
+app.use(`/api/${API_VERSION}/products`, products)
 
 // Brands
 app.use(`/api/${API_VERSION}/brands`, brands)

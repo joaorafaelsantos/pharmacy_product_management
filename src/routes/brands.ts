@@ -4,7 +4,7 @@ import brandController from "../controllers/brandController"
 
 /**
 * @swagger
-  * /brand:
+  * /brands:
   * post:
   *     consumes:
   *       - application/json
@@ -35,7 +35,7 @@ router.post("/", async (req, res, next) => {
 
 /**
 * @swagger
-  * /brand:
+  * /brands:
   *     get:
   *       produces:
   *         - application/json
@@ -65,7 +65,7 @@ router.get("/", async (req, res) => {
 
 /**
 * @swagger
-  * /brand/{brandId}:
+  * /brands/{brandId}:
   * get:
   *     parameters: []
   *     responses:
@@ -81,7 +81,7 @@ router.get("/:id", async (req, res) => {
 
 /**
 * @swagger
-  * /brand/{brandId}:
+  * /brands/{brandId}:
   * delete:
   *     produces:
   *       - application/json
@@ -99,7 +99,7 @@ router.delete("/:id", async (req, res) => {
 
 /**
 * @swagger
-  * /brand/{brandId}:
+  * /brands/{brandId}:
   * put:
   *     consumes:
   *       - application/json

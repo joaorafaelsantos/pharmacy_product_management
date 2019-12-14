@@ -78,6 +78,26 @@ async function update(table: string, value: string, name: string) {
     return { id: value, name }
 }
 
+async function updateProduct(table: string, value: string, name: string, brand_id: string) {
+    const updateQuery = {
+        TableName: table,
+        Key: {
+            "id": value
+        },
+        UpdateExpression: "set #name = :name, #brand_id = :brand_id",
+        ExpressionAttributeValues: {
+            ":name": name,
+            ":brand_id": brand_id,
+        },
+        ExpressionAttributeNames: {
+            "#name": "name",
+            "#brand_id": "brand_id",
+        }
+    };
+    await ddbUpdate(updateQuery)
+    return { id: value, name, brand_id }
+}
+
 async function remove(table: string, value: string) {
     const key = "id"
     const removeByIdQuery = {
@@ -90,4 +110,4 @@ async function remove(table: string, value: string) {
     return results
 }
 
-export default { create, findAll, findOne, update, remove }
+export default { create, findAll, findOne, update, updateProduct, remove }
