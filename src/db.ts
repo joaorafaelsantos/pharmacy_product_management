@@ -60,19 +60,22 @@ async function findOne(table: string, value: string) {
     return results[DDB_ITEMS][0] || {}
 }
 
-async function update(table: string, value: string, data: object) {
+async function update(table: string, value: string, name: string) {
     const updateQuery = {
         TableName: table,
         Key: {
             "id": value
         },
-        UpdateExpression: "set variable1 = :name",
+        UpdateExpression: "set #name = :name",
         ExpressionAttributeValues: {
-            ":name": data,
+            ":name": name,
+        },
+        ExpressionAttributeNames: {
+            "#name": "name",
         }
     };
     await ddbUpdate(updateQuery)
-    return { ...data }
+    return { id: value, name }
 }
 
 async function remove(table: string, value: string) {

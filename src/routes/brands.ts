@@ -124,6 +124,7 @@ router.delete("/:id", async (req, res) => {
   *     description: Update a brand
 */
 router.put("/:id", async (req, res) => {
+  const name = req.body.name || null
   res.json(await brandController.updateById(res, req.params.id, name))
 })
 

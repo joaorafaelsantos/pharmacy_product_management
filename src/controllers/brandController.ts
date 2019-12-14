@@ -28,7 +28,7 @@ const getById = async (id: string) => {
 
 const updateById = async (res: any, id: string, name: string) => {
     try {
-        if (name) return await Brand.updateById(id, {name})
+        if (name) return await Brand.updateById(id, name)
         res.status(400)
         throw Error("Name is not defined")
     } catch (err) {
