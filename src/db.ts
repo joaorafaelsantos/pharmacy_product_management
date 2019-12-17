@@ -1,7 +1,9 @@
 const AWS = require("aws-sdk")
+const dynamodb = new AWS.DynamoDB()
 const documentClient = new AWS.DynamoDB.DocumentClient()
-import ascSortById from "./utils"
+import { ascSortById } from "./utils"
 import IQueryItem from "./interfaces/IQueryItem"
+import { promiseTimeout } from "./utils"
 
 if (process.env.ENVIRONMENT === "development") {
     const credentials = new AWS.SharedIniFileCredentials({ profile: process.env.AWS_PROFILE })
@@ -11,25 +13,22 @@ if (process.env.ENVIRONMENT === "development") {
 AWS.config.update({ region: process.env.AWS_REGION })
 
 const DDB_ITEMS = "Items"
+const API_TIMEOUT = Number(process.env.API_TIMEOUT)
 
 async function ddbPut(query) {
-    const scan = await documentClient.put(query).promise()
-    return scan
+    return await promiseTimeout(API_TIMEOUT, documentClient.put(query).promise())
 }
 
 async function ddbScan(query) {
-    const scan = await documentClient.scan(query).promise()
-    return scan
+    return await promiseTimeout(API_TIMEOUT, documentClient.scan(query).promise())
 }
 
 async function ddbUpdate(query) {
-    const scan = await documentClient.update(query).promise()
-    return scan
+    return await promiseTimeout(API_TIMEOUT, documentClient.update(query).promise())
 }
 
 async function ddbRemove(query) {
-    const remove = await documentClient.delete(query).promise()
-    return remove
+    return await promiseTimeout(API_TIMEOUT, documentClient.delete(query).promise())
 }
 
 async function create(table: string, data: object) {
@@ -51,7 +50,6 @@ async function findAll(table: string) {
 }
 
 async function findOne(table: string, id: string) {
-    const key = "id"
     const findByIdQuery = {
         TableName: table,
         FilterExpression: 'id = :id',
@@ -84,16 +82,19 @@ async function update(table: string, id: string, items: Array<IQueryItem>) {
     return findOne(table, id)
 }
 
-async function remove(table: string, value: string) {
-    const key = "id"
+async function remove(table: string, id: string) {
     const removeByIdQuery = {
         TableName: table,
         Key: {
-            [key]: value
+            "id": id
         },
     };
     const results = await ddbRemove(removeByIdQuery)
     return results
 }
 
-export default { create, findAll, findOne, update, remove }
+async function listTables() {
+    return await promiseTimeout(API_TIMEOUT, dynamodb.listTables().promise())
+}
+
+export default { create, findAll, findOne, update, remove, listTables }
