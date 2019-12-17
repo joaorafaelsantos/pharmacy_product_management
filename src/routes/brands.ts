@@ -15,8 +15,6 @@ import brandController from "../controllers/brandController"
   *         in: body
   *         name: body
   *         required: true
-  *         schema:
-  *           $ref: '#/definitions/Brand'
   *     responses:
   *       '201':
   *         description: Created
@@ -53,8 +51,6 @@ router.post("/", async (req, res, next) => {
   *                 name: Deltasone
   *               - id: 3
   *                 name: Amoxil
-  *           schema:
-  *             $ref: '#/definitions/Brand'
   *       tags:
   *         - Brand
   *       description: Get all brands
@@ -110,8 +106,6 @@ router.delete("/:id", async (req, res) => {
   *         in: body
   *         name: body
   *         required: true
-  *         schema:
-  *           $ref: '#/definitions/Brand'
   *     responses:
   *       '200':
   *         description: OK

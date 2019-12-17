@@ -15,8 +15,6 @@ import productController from "../controllers/productController"
   *         in: body
   *         name: body
   *         required: true
-  *         schema:
-  *           $ref: '#/definitions/Product'
   *     responses:
   *       '201':
   *         description: Created
@@ -68,8 +66,6 @@ router.post("/", async (req, res, next) => {
   *               id: 3
   *               name: Amoxicillin
   *               properties: {}
-  *         schema:
-  *           $ref: '#/definitions/Product'
   *     tags:
   *       - Product
   *     description: Get all products
@@ -125,8 +121,6 @@ router.delete("/:id", async (req, res) => {
   *         in: body
   *         name: body
   *         required: true
-  *         schema:
-  *           $ref: '#/definitions/Product'
   *     responses:
   *       '200':
   *         description: OK
