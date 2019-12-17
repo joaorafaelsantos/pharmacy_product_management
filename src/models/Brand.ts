@@ -1,5 +1,6 @@
 const uuidv1 = require('uuid/v1');
 import IBrand from "../interfaces/Ibrand"
+import IQueryItem from "../interfaces/IQueryItem"
 import db from "../db"
 
 const BRAND_TABLE = "Brand"
@@ -24,8 +25,8 @@ class Brand implements IBrand {
         return await db.findOne(BRAND_TABLE, id)
     }
 
-    static async updateById(id: string, name: string) {
-        return await db.update(BRAND_TABLE, id, name)
+    static async updateById(id: string, data: Array<IQueryItem>) {
+        return await db.update(BRAND_TABLE, id, data)
     }
 
     static async removeById(id: string) {

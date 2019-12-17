@@ -1,16 +1,18 @@
 const uuidv1 = require('uuid/v1');
 import IProduct from "../interfaces/IProduct"
 import db from "../db"
+import IQueryItem from "../interfaces/IQueryItem"
 
 const BRAND_TABLE = "Product"
 
 class Product implements IProduct {
     private _id: string
 
-    constructor(public name: string, public brand_id: string) {
+    constructor(public name: string, public brand_id: string, public properties: object) {
         this._id = uuidv1()
         this.name = name
         this.brand_id = brand_id
+        this.properties = properties
     }
 
     static async create(data: object) {
@@ -25,8 +27,8 @@ class Product implements IProduct {
         return await db.findOne(BRAND_TABLE, id)
     }
 
-    static async updateById(id: string, name: string, brand_id: string) {
-        return await db.updateProduct(BRAND_TABLE, id, name, brand_id)
+    static async updateById(id: string, data: Array<IQueryItem>) {
+        return await db.update(BRAND_TABLE, id, data)
     }
 
     static async removeById(id: string) {
@@ -37,7 +39,8 @@ class Product implements IProduct {
         return {
             id: this._id,
             name: this.name,
-            brand_id: this.brand_id
+            brand_id: this.brand_id,
+            properties: this.properties
         }
     }
 }

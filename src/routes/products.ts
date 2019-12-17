@@ -31,7 +31,8 @@ import productController from "../controllers/productController"
 router.post("/", async (req, res, next) => {
   const name = req.body.name || null
   const brand_id = req.body.brand_id || null
-  res.json(await productController.create(res, name, brand_id))
+  const properties = req.body.properties || null
+  res.json(await productController.create(res, name, brand_id, properties))
 })
 
 /**
@@ -137,7 +138,8 @@ router.delete("/:id", async (req, res) => {
 router.put("/:id", async (req, res) => {
   const name = req.body.name || null
   const brand_id = req.body.brand_id || null
-  res.json(await productController.updateById(res, req.params.id, name, brand_id))
+  const properties = req.body.properties || {}
+  res.json(await productController.updateById(res, req.params.id, name, brand_id, properties))
 })
 
 export default router

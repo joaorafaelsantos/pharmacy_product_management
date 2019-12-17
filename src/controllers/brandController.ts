@@ -1,4 +1,5 @@
 import Brand from "../models/Brand"
+import IQueryItem from "../interfaces/IQueryItem"
 
 const create = async (res: any, name: string) => {
     try {
@@ -28,7 +29,15 @@ const getById = async (id: string) => {
 
 const updateById = async (res: any, id: string, name: string) => {
     try {
-        if (name) return await Brand.updateById(id, name)
+        if (name) {
+            let queryItems: Array<IQueryItem> = [
+                {
+                    name: "name",
+                    value: name
+                }
+            ]
+            return await Brand.updateById(id, queryItems)
+        }
         res.status(400)
         throw Error("Name is not defined")
     } catch (err) {

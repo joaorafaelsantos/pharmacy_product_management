@@ -1,6 +1,7 @@
 const AWS = require("aws-sdk")
 const documentClient = new AWS.DynamoDB.DocumentClient()
 import ascSortById from "./utils"
+import IQueryItem from "./interfaces/IQueryItem"
 
 if (process.env.ENVIRONMENT === "development") {
     const credentials = new AWS.SharedIniFileCredentials({ profile: process.env.AWS_PROFILE })
@@ -49,53 +50,38 @@ async function findAll(table: string) {
     return ascSortById(results[DDB_ITEMS]) || []
 }
 
-async function findOne(table: string, value: string) {
+async function findOne(table: string, id: string) {
     const key = "id"
     const findByIdQuery = {
         TableName: table,
-        FilterExpression: `${key} = :${key}`,
-        ExpressionAttributeValues: { [`:${key}`]: value }
+        FilterExpression: 'id = :id',
+        ExpressionAttributeValues: { ':id': id }
     };
     const results = await ddbScan(findByIdQuery)
     return results[DDB_ITEMS][0] || {}
 }
 
-async function update(table: string, value: string, name: string) {
-    const updateQuery = {
-        TableName: table,
-        Key: {
-            "id": value
-        },
-        UpdateExpression: "set #name = :name",
-        ExpressionAttributeValues: {
-            ":name": name,
-        },
-        ExpressionAttributeNames: {
-            "#name": "name",
-        }
-    };
-    await ddbUpdate(updateQuery)
-    return { id: value, name }
-}
+async function update(table: string, id: string, items: Array<IQueryItem>) {
+    let UpdateExpression = 'set'
+    let ExpressionAttributeValues = {}
+    let ExpressionAttributeNames = {}
+    items.forEach((item, index) => {
+        UpdateExpression += ` #${item.name} = :${item.name}${index < items.length - 1 ? ',' : ''}`
+        ExpressionAttributeValues[`:${item.name}`] = item.value
+        ExpressionAttributeNames[`#${item.name}`] = item.name
+    })
 
-async function updateProduct(table: string, value: string, name: string, brand_id: string) {
     const updateQuery = {
         TableName: table,
         Key: {
-            "id": value
+            "id": id
         },
-        UpdateExpression: "set #name = :name, #brand_id = :brand_id",
-        ExpressionAttributeValues: {
-            ":name": name,
-            ":brand_id": brand_id,
-        },
-        ExpressionAttributeNames: {
-            "#name": "name",
-            "#brand_id": "brand_id",
-        }
+        UpdateExpression,
+        ExpressionAttributeValues,
+        ExpressionAttributeNames
     };
     await ddbUpdate(updateQuery)
-    return { id: value, name, brand_id }
+    return findOne(table, id)
 }
 
 async function remove(table: string, value: string) {
@@ -110,4 +96,4 @@ async function remove(table: string, value: string) {
     return results
 }
 
-export default { create, findAll, findOne, update, updateProduct, remove }
+export default { create, findAll, findOne, update, remove }
