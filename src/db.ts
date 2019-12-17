@@ -49,13 +49,20 @@ async function findAll(table: string) {
     return ascSortById(results[DDB_ITEMS]) || []
 }
 
-async function findOne(table: string, id: string) {
-    const findByIdQuery = {
+async function findOne(table: string, data: IQueryItem) {
+    const FilterExpression = `#${data.name} = :${data.name}`
+    let ExpressionAttributeValues = {}
+    let ExpressionAttributeNames = {}
+    ExpressionAttributeValues[`:${data.name}`] = data.value
+    ExpressionAttributeNames[`#${data.name}`] = data.name
+
+    const findByItemQuery = {
         TableName: table,
-        FilterExpression: 'id = :id',
-        ExpressionAttributeValues: { ':id': id }
+        FilterExpression,
+        ExpressionAttributeValues,
+        ExpressionAttributeNames
     };
-    const results = await ddbScan(findByIdQuery)
+    const results = await ddbScan(findByItemQuery)
     return results[DDB_ITEMS][0] || {}
 }
 
@@ -79,7 +86,8 @@ async function update(table: string, id: string, items: Array<IQueryItem>) {
         ExpressionAttributeNames
     };
     await ddbUpdate(updateQuery)
-    return findOne(table, id)
+    const queryItem: IQueryItem = { name: "id", value: id }
+    return findOne(table, queryItem)
 }
 
 async function remove(table: string, id: string) {

@@ -21,7 +21,16 @@ const getAll = async () => {
 
 const getById = async (id: string) => {
     try {
-        return await Brand.getById(id)
+        let queryItem: IQueryItem = { name: "id", value: id }
+        return await Brand.getByItem(queryItem)
+    } catch (err) {
+        return { error: err }
+    }
+}
+const getByName = async (name: string) => {
+    try {
+        let queryItem: IQueryItem = { name: "name", value: name }
+        return await Brand.getByItem(queryItem)
     } catch (err) {
         return { error: err }
     }
@@ -53,4 +62,4 @@ const removeById = async (id: string) => {
     }
 }
 
-export default { create, getAll, getById, updateById, removeById }
+export default { create, getAll, getById, getByName, updateById, removeById }

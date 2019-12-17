@@ -72,6 +72,7 @@ router.post("/", async (req, res, next) => {
   *     description: Get all products
 */
 router.get("/", async (req, res) => {
+  if (req.query.name) res.json(await productController.getByName(req.query.name))
   res.json(await productController.getAll())
 })
 

@@ -23,8 +23,8 @@ class Product implements IProduct {
         return await db.findAll(BRAND_TABLE)
     }
 
-    static async getById(id: string) {
-        return await db.findOne(BRAND_TABLE, id)
+    static async getByItem(data: IQueryItem) {
+        return await db.findOne(BRAND_TABLE, data)
     }
 
     static async updateById(id: string, data: Array<IQueryItem>) {

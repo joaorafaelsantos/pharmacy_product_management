@@ -1,4 +1,5 @@
 import Product from "../models/Product"
+import IQueryItem from "../interfaces/IQueryItem"
 
 const create = async (res: any, name: string, brand_id: string, properties?: object) => {
     try {
@@ -20,7 +21,17 @@ const getAll = async () => {
 
 const getById = async (id: string) => {
     try {
-        return await Product.getById(id)
+        let queryItem: IQueryItem = {name: "id", value: id}
+        return await Product.getByItem(queryItem)
+    } catch (err) {
+        return { error: err }
+    }
+}
+
+const getByName = async (name: string) => {
+    try {
+        let queryItem: IQueryItem = {name: "name", value: name}
+        return await Product.getByItem(queryItem)
     } catch (err) {
         return { error: err }
     }
@@ -67,4 +78,4 @@ const removeById = async (id: string) => {
     }
 }
 
-export default { create, getAll, getById, updateById, removeById }
+export default { create, getAll, getById, getByName, updateById, removeById }

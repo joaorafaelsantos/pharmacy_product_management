@@ -56,8 +56,11 @@ router.post("/", async (req, res, next) => {
   *       description: Get all brands
 */
 router.get("/", async (req, res) => {
+  if (req.query.name) res.json(await brandController.getByName(req.query.name))
   res.json(await brandController.getAll())
 })
+
+
 
 /**
 * @swagger
